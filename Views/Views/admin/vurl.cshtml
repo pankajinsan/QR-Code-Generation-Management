@@ -1,0 +1,457 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Admin Panel</title>
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/vector.css" rel="stylesheet" />
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    <link href="~/owl-carousel/owl.carousel.css" rel="stylesheet" />
+    <link href="~/owl-carousel/owl.theme.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <script src="~/owl-carousel/owl.carousel.js"></script>
+    <script src="~/Scripts/wow.min.js"></script>
+    <link href="~/Content/vector.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <link href="~/Content/jquery.bdt.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery.bdt.js"></script>
+    <script src="~/Scripts/jquery.sortelements.js"></script>
+    <script src="~/Scripts/jquery.center.js"></script>
+
+
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <style>
+        .ui-widget-header, .ui-state-default, ui-button {
+            /*background: #b9cd6d;
+                border: 1px solid #b9cd6d;
+            color: #FFFFFF;
+            font-weight: bold;*/
+        }
+    </style>
+
+
+    <script>
+        var uid = 0;
+        var sta = "nup";
+        function rclear() {
+            uid = 0;
+            sta = "nup";
+            // $("#txtdate").val("");
+            $("#txtnarr").val("");
+            $("#txturl").val("");
+            $("#btnsave").text("Save");
+            $("#divqr").empty();
+        }
+        rclear();
+
+        function showdata() {
+            $("#pageloaddiv").show();
+            $.ajax({
+                type: "Post",
+                url: "../admin/showvdata",
+                data: { "showrcord": "data" },
+                dataType: 'json',
+                success: function (data) {
+                    var rec = "";
+                    //  alert(data.record.length);
+                    // return false;
+                    $("#trd").empty();
+                    for (var k = 0; k <= data.record.length - 1; k++) {
+
+                        /*var dateTime = data[k].vdate;
+                        var date = new Date(parseInt(dateTime.substr(6)));
+                        var formatted =("0" + date.getDate()).slice(-2) + "-" +
+                              ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
+                              date.getFullYear();*/
+                        rec = "";
+                        rec = "<tr class='edt' id='rtbl-" + k + "' style='cursor:pointer;background-image: url(/images/form_bg.jpg);background-repeat: repeat-x;'><td id=uid-" + k + ">" + data.record[k].vid + "</td>" +
+                            "<td id=dt-" + k + ">" + data.record[k].vdate + "</td>" +
+                            "<td id=con-" + k + ">" + data.record[k].curl + "</td>" +
+                            "<td id=von-" + k + ">" + data.record[k].vurl + "</td>" +
+                            "<td id=fi-" + k + ">" + data.record[k].vremark + "</td><tr>";
+
+                        $("#trd").append(rec);
+                      $(".pull-left").change();
+                    }
+
+
+                    $("#pageloaddiv").hide();
+                },
+                error: function () {
+                }
+
+            })
+        }
+
+        $(document).on("click", ".edt", function () {
+            sta = "up";
+            var rec = $(this).attr("id").split("-")[1];
+            uid = $("#uid-" + rec).text();
+            $("#txtdate").val($("#dt-" + rec).text());
+            $("#txturl").val($("#von-" + rec).text());
+            // $("#vufile").val($("#fi-" + rec).text());
+            $("#txtnarr").val($("#fi-" + rec).text());
+            $("#proxylbl").text($("#con-" + rec).text())
+            // $("#afile").attr("href", "http://www.forlagetvektor.org/Upload/" + $("#fi-" + rec).text());
+            $("#btnsave").text("Update");
+            getqr();
+        });
+        $(function () {
+            $("#dialog").text(" Are you sure you want to delete record?")
+            $("#dialog").dialog({
+                autoOpen: false,
+                dialogClass: 'dlgfixed',
+                position: "center",
+                modal: true,
+                buttons: {
+                    "Confirm": function () {
+                        $.ajax({
+                            type: "Post",
+                            url: "../admin/vdelete/",
+                            data: { "id": "" + uid + "" },
+                            success: function (data) {
+                                rclear();
+                                showdata();
+                                alert(data);
+                                $("#dialog").dialog("close");
+                                $("#pageloaddiv").hide();
+                            },
+                            error: function () {
+
+                            }
+
+                        })
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $(".dlgfixed").center(false);
+
+        });
+
+        $(document).on("click", "#btndelete", function () {
+            $("#dialog").dialog("open");
+
+
+
+        });
+        showdata();
+        var dateToday = new Date();
+
+        $(function () {
+            $("#txtdate").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: false,
+                dateFormat: 'dd-mm-yy',
+            });
+        });
+
+        $(document).ready(function () {
+            $("#txtdate").keydown(function () {
+                return false;
+            });
+            $("#txtdate").datepicker({ dateFormat: 'dd-mm-yy' });
+            var datec = new Date();
+            var dtmonth = parseInt(datec.getMonth()) + 1;
+            $("#txtdate").val(datec.getDate() + "-" + dtmonth + "-" + datec.getFullYear());
+
+            $("#btnsave").click(function () {
+                $("#pageloaddiv").show();
+
+                if (sta == "up") {
+                    var cdate = $("#txtdate").val();
+                    var mnt = parseInt(cdate.split("-")[1]);
+                    var dtdate = cdate.split("-")[2] + "-" + mnt + "-" + cdate.split("-")[0];
+
+                    $.ajax({
+                        type: "Post",
+                        url: "../admin/urlupdate/",
+                        data: { "id": "" + uid + "", "txtdate": "" + dtdate + "", "txturl": "" + $("#txturl").val() + "", "vremark": "" + $("#txtnarr").val() + "" },
+                        success: function (data) {
+
+                            rclear();
+                            showdata();
+                            alert(data);
+                            $("#pageloaddiv").hide();
+                        },
+                        error: function () {
+
+                        }
+
+                    })
+                    sta = "nup";
+                }
+                else {
+                    var cdate = $("#txtdate").val();
+                    var mnt = parseInt(cdate.split("-")[1]);
+                    var dtdate = cdate.split("-")[2] + "-" + mnt + "-" + cdate.split("-")[0];
+                    var fname = $("#vufile").val();
+
+                    $.ajax({
+                        type: "Post",
+                        url: "../admin/urlsave/",
+                        data: { "txtdate": "" + dtdate + "", "txtnar": "" + $("#txtnarr").val() + "", "vurl": "" + $("#txturl").val() + "" },
+                        success: function (data) {
+                            rec1 = data.split("-")[0];
+                            rec2 = data.split("-")[1];
+                            rec3 = data.split("-")[2]
+                            rclear();
+                            var fl = rec3;
+
+                            var c = "<img id='imgqr' class='img-responsive' src='" + rec2 + "' style='width:180px;height:150px;margin-top:7px;'/></br><a download='" + fl + ".jpg' href='" + rec2 + "'>QR Image</a>"
+                            $("#divqr").empty().append(c);
+
+                            showdata();
+                            alert(rec1);
+                            $("#pageloaddiv").hide();
+                        },
+                        error: function () {
+
+                        }
+
+                    })
+                }
+            });
+
+            $("#btncancel").click(function () {
+                rclear();
+            });
+
+
+        });
+        function getqr() {
+            $(document).ready(function () {
+                $("#pageloaddiv").show();
+                var s = $("#proxylbl").text();
+                if (s == "") {
+                    $("#pageloaddiv").hide();
+                    alert("Please fill record");
+
+                    return false;
+                }
+                $.ajax({
+                    type: "Post",
+                    url: "../admin/qrcode/",
+                    data: { "lurl": "" + s + "" },
+                    success: function (data) {
+                        var fl = data.split("-")[1];
+                        var c = "<img id='imgqr' class='img-responsive' src='" + data.split("-")[0] + "' style='width:180px;height:150px;margin-top:7px;'/></br><a download='" + fl + ".jpg' href='" + data.split("-")[0] + "'>QR Image</a>"
+                        $("#divqr").empty().append(c);
+                        $("#pageloaddiv").hide();
+                    },
+                    error: function () {
+
+                    }
+
+                })
+            })
+
+        }
+        $(document).ready(function () {
+            $('#ntable').bdt({
+                pageRowCount: 3,
+                arrowDown: 'fa-angle-down',
+                arrowUp: 'fa-angle-up'
+            });
+
+
+            //pageRowCount: 10,
+
+            //arrowDown: 'fa-angle-down',
+
+            //arrowUp: 'fa-angle-up'
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <div id="pageloaddiv"></div>
+
+        <div class="container-fluid">
+            <div id="dialog" title="Confirmation Required">
+
+            </div>
+            <div class="row" style="background-color: #0E2030; z-index: 9999; min-height: 40px; position: fixed; width: 100%; border-bottom: 5px solid #1878e4;">
+                <div class="col-md-2" style="padding: 2%;">
+                    <span style="color: #2CA3C8; font-weight: bold; font-size: 18px;">!Hi : </span><span style="color: white; font-size: 15px;font-weight:bold;">@Session["admin"]</span>
+                </div>
+                <div class="col-md-8" style="padding: 0px;">
+                    <div class="" style=" text-align: center;">
+                        <label style="font-size: 2vmax; color: brown; padding: 2%; color: white; ">Admin Panel</label>
+                    </div>
+                </div>
+                <div class="col-md-2" style="padding: 2%;text-align:right;">
+                    <a href="@Url.Action("index","admin")"> <label id="lbllog" style="color:white;font-weight:bold;text-decoration:underline;cursor:pointer;">Logout</label></a>
+                </div>
+            </div>
+            <div class="container" style="margin-top:200px;">
+                <div class="row">
+                    <div class="col-lg-1">
+                    </div>
+                    <div class="col-lg-2">
+                        <label>Date</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="text" id="txtdate" class="txtdate" />
+                    </div>
+                    <div class="col-lg-1">
+                        <label>URL</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="text" id="txturl" value="" />
+                    </div>
+                    <div class="col-lg-1">
+
+                        <input id="proxylbl" type="hidden" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:5%;">
+                    <div class="col-lg-1">
+                    </div>
+                    <div class="col-md-2">
+                        <label>Video Description</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <textarea id="txtnarr" rows="18" cols="50" style="resize: none; background-image: url(/images/form_bg.jpg); background-repeat: repeat-x; border: 1px solid #d1c7ac; border-radius: 2px; width: 270px; height: 145px; color: #333333; padding: 3px; margin-right: 4px; margin-bottom: 1px; margin-top: 9px; font-family: tahoma, arial, sans-serif; font-size: small; border-bottom: 2px solid #41a87c !important; width: 100% !important; " name="txtnarr" id="txtnarr"></textarea>
+                    </div>
+                    <div class="col-lg-2">
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div id="divqr">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-2">
+                        <button id="btnsave" class="btn btn-primary btn-video" role="button" style="margin-top:50px;">Save</button>
+                        @*<a class="btn btn-primary btn-video" href="" role="button" style="margin-top:50px;">Update</a>*@
+                    </div>
+                    <div class="col-lg-2">
+                        <button id="btndelete" class="btn btn-primary btn-video" role="button" style="margin-top:50px;">Delete</button>
+                    </div>
+                    <div class="col-lg-2">
+                        <button id="btncancel" class="btn btn-primary btn-video" role="button" style="margin-top:50px;">Cancel</button>
+                    </div>
+                </div>
+                <div class="row" style="padding-top:4%;">
+                    <div class="col-lg-1">
+
+
+                    </div>
+                    <div class="col-lg-10">
+
+
+                        <table class="table" id="ntable">
+
+                            <thead>
+
+                                <tr style="background-color: #0E2030; color: white;">
+
+                                    <th>id</th>
+                                    <th>Date</th>
+                                    <th>Proxy Url</th>
+                                    <th>Video Url</th>
+                                    <th>Remark</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="trd">
+
+                                @*<tr class="active">
+
+                                        <td>1</td>
+                                        <td>04/07/2014</td>
+                                        <td>Credit Card</td>
+
+
+
+                                        <td>Call in to confirm</td>
+
+                                    </tr>
+
+                                    <tr class="success">
+
+                                        <td>2</td>
+                                        <td>01/07/2014</td>
+                                        <td>Water</td>
+
+
+
+                                        <td>Paid</td>
+
+                                    </tr>
+
+                                    <tr class="info">
+
+                                        <td>3</td>
+                                        <td>05/07/2014</td>
+                                        <td>Internet</td>
+
+
+
+                                        <td>Change plan</td>
+
+                                    </tr>
+
+                                    <tr class="warning">
+
+                                        <td>4</td>
+                                        <td>03/07/2014</td>
+
+                                        <td>Electricity</td>
+
+
+                                        <td>Pending</td>
+
+                                    </tr>
+
+                                    <tr class="danger">
+
+                                        <td>5</td>
+                                        <td>06/07/2014</td>
+                                        <td>Telephone</td>
+
+
+
+                                        <td>Due</td>
+
+                                    </tr>*@
+
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                    <div class="col-lg-1">
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

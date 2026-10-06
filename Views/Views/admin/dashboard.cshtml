@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "dashboard";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+<style>
+    .shadow {
+        -webkit-box-shadow: 4px 20px 83px -42px rgba(255,136,0,1);
+        -moz-box-shadow: 4px 20px 83px -42px rgba(255,136,0,1);
+        box-shadow: 4px 20px 83px -42px rgba(255,136,0,1);
+        border-bottom: 2px solid orange;
+    }
+    .logo{
+
+    padding: 15px;
+     width: 180px;
+    }
+    .tile {
+        background-image: linear-gradient(to bottom,#f86924 0,#f3b029 100%);
+        width: 270px;
+        height: 110px;
+        cursor:pointer;
+    }
+    h3 {
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+        padding-left: 23px;
+    }
+    .subtxt {
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+        
+    }
+    .tileicon {
+        color: white;
+        font-size: 50px;
+        padding: 26px;
+        padding-left: 50px;
+    }
+    
+</style>
+<div class="container-fluid ">
+    <div class="row shadow">
+        <div class="col-lg-1">
+
+        </div>
+        <div class="col-lg-2">
+            <img class="logo animated slideInDown"  src="~/images/logo_forlagetvektor.png" />
+        </div>
+    </div>
+   <div class="container" style="margin-top:100px;">
+       <div class="row" style="margin-left: 15px;">
+           <div class="col-lg-3">
+               <a href="@Url.Action("vupload","admin")">
+                   <div class="tile animated slideInLeft">
+                       <div class="row" style="height: 90px; width: 270px;">
+                           <div class="col-lg-6">
+                               <h3>File Upload</h3>
+                           </div>
+                           <div class="col-lg-6">
+
+                               <i class="fa fa-folder-open tileicon" aria-hidden="true" style="color:white;"></i>
+
+                           </div>
+
+                       </div>
+                       <div class="row" style="height: 20px; background-color: #58595B; width: 270px; margin-left: 0px; text-align: center; line-height: 0.1px; ">
+                           <label class="subtxt animated swing">TAKETILE</label>
+                       </div>
+                   </div>
+                   </a>
+               </div>
+           <div class="col-lg-3">
+               <a href="@Url.Action("vurl","admin")">
+                   <div class="tile animated slideInLeft">
+                       <div class="row" style="height: 90px; width: 270px;">
+                           <div class="col-lg-6">
+                               <h3>Proxy QR</h3>
+                           </div>
+                           <div class="col-lg-6">
+
+                               <i class="fa fa-qrcode tileicon" aria-hidden="true" style="color:white;"></i>
+
+                           </div>
+                       </div>
+                       <div class="row" style="height: 20px; background-color: #58595B; width: 270px; margin-left: 0px; text-align: center; line-height: 0.1px; ">
+                           <label class="subtxt animated swing">TAKETILE</label>
+                       </div>
+                   </div>
+               </a>
+           </div>
+           <div class="col-lg-6">
+
+           </div>
+         
+       </div>
+   </div>
+</div>

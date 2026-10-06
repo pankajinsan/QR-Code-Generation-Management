@@ -1,0 +1,260 @@
+﻿@{
+    ViewBag.Title = "upvideo";
+    Layout = "~/Views/Shared/_dashLayout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $("#dten").datepicker({
+            format: "dd-mm-yyyy"
+        });
+       
+        function clear()
+        {
+            var dt = new Date();
+            var m = dt.getMonth() + 1;
+            var dtr=dt.getDate()+"-"+m+"-"+dt.getFullYear();
+            $("#txttitle").val("");
+            $("#txtf").text("");
+            $("#txtbid").val("");
+            $("#dten").datepicker("setDate",dtr);
+            $("#txtqr").val(null);
+            $("#qrimg").attr("src", "");
+        }
+        clear();
+        function showdata()
+        {
+            $("#pageloaddiv").show();
+            $("#tblrec").DataTable().destroy();
+            $.ajax({
+                type: "POST",
+                url: "../Home/display",
+                // data: { "qrurl": "C:\\Users\\HP-INDIA\\Desktop\\New folder\\aboutus.jpg" },               
+                success: function (data) {
+                    var c = "";
+                    for (var k=0; k<data.length; k++)
+                    {
+                        var up = data[k].qrdate;
+                         var updt = new Date(parseInt(up.substr(6)));
+                         var mm = parseInt(updt.getMonth()) + 1;
+                         updt = updt.getDate() + "-" + mm + "-" + updt.getFullYear();
+                        c = c + " " + "<tr class='tbl' id='tbl-"+k+"' style='cursor:pointer;'><td style='display:none;' class='qidr' id='qid-"+k+"'>" + data[k].qid + "</td><td id='updt-"+k+"'>" +updt + "</td><td id='qrtitle-"+k+"'>" + data[k].qrtitle + "</td><td id='qurl-"+k+"'>" + data[k].qrurl + "</td></tr>"
+                    }
+                    $("#rdt").empty().append(c);
+                    $("#tblrec").DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ]
+                    });
+                   
+                    $("#pageloaddiv").hide();
+                }
+            });
+        }
+        showdata();
+        $(document).on("click",".tbl",function(){
+            var r = $(this).attr("id");
+            r = r.split("-")[1];
+            var qi = $("#qid-" + r).text();
+            $("#txtbid").val(qi);
+            var dt=$("#updt-" + r).text();
+            var qrt=$("#qrtitle-" + r).text();
+            var url = $("#qurl-" + r).text();
+            $("#dten").val(dt);
+            $("#txttitle").val(qrt);
+            $("#txtf").text(url);
+            $("#qrimg").attr("src", "\\path\\" + url);
+           
+        });
+        $("#btndelete").click(function () {            
+            var qi = $("#txtbid").val();
+            $("#pageloaddiv").show();
+            $.ajax({
+                type: "POST",
+                url: "../Home/rdelete",
+                // data: { "qrurl": "C:\\Users\\HP-INDIA\\Desktop\\New folder\\aboutus.jpg" },
+                data: { "qid": "" + qi + ""},
+                success: function (data) {
+                    $("#pageloaddiv").hide();
+                    alert("Record Deleted");
+                    clear();
+                    showdata();
+                }
+            });
+        });
+        //$("#btndelete").click(function () {
+        //    clear();
+        //});
+           
+        function savedata(dt) {
+            $.ajax({
+                type: "POST",
+                url: "../Home/srecord",
+                data: { "qrdate": "" + $("#dten").val() + "", "qrtitle": "" + $("#txttitle").val() + "", },
+                success: function (data) {
+                    $("#qrimg").attr("src", dt);
+                    $("#pageloaddiv").hide();
+                    showdata();
+                    if (data.toString().indexOf("/") != -1 || data.toString().indexOf("\\") != -1) { 
+                        alert("Record Inserted");
+                    }
+
+                }
+            });
+
+        }
+        function updata() {
+            var dt = $("#dten").val().split("-")[2] + "-" + $("#dten").val().split("-")[1] + "-" + $("#dten").val().split("-")[0];
+            var i = $("#txtbid").val();
+            var u = $("#txtf").text().toString().split(".")[0];
+            $.ajax({
+                type: "POST",
+                url: "../Home/urecord",
+                // data: { "qrurl": "C:\\Users\\HP-INDIA\\Desktop\\New folder\\aboutus.jpg" },
+                data: { "qid": "" + i + "", "qrdate": "" + dt + "", "qrtitle": "" + $("#txttitle").val() + "", "txturl": "" +u+ "" },
+                async:false,
+                success: function (data) {
+                    $("#qrimg").attr("src", data);
+                    $("#pageloaddiv").hide();
+                    if (data.toString().indexOf("/") != -1 || data.toString().indexOf("\\") != -1) {
+                        alert("Record Updated");
+                    }
+                   
+
+                }
+            });
+
+        }
+        $("#btnupdate").click(function () {
+            var filename = $("#txtqr").val().split('\\').pop();
+            var fileup = $("#txtqr").get(0);
+            var filess = fileup.files;
+            var frmdata = new FormData();
+            $("#pageloaddiv").show();
+
+            if (fileup.files.length > 0) {
+                updata();
+                frmdata.append(filess[0].name, filess[0]);
+                $.ajax({
+                    type: "POST",
+                    url: "../home/qrcode",
+                    data: frmdata,
+                    contentType: false, // Not to set any content header  
+                    processData: false, //
+                    success: function (data) {
+                        showdata();
+                        clear();
+                    }
+                });
+            }
+            else {
+                updata();
+                showdata();
+                clear();
+            }
+        });
+
+
+
+        $("#btnsave").click(function () {
+            var filename = $("#txtqr").val().split('\\').pop();
+            var fileup = $("#txtqr").get(0);
+            var filess = fileup.files;
+            var frmdata = new FormData();
+            frmdata.append(filess[0].name, filess[0]);
+            $("#pageloaddiv").show();
+            $.ajax({
+                type: "POST",
+                url: "../Home/qrcode",
+                // data: { "qrurl": "C:\\Users\\HP-INDIA\\Desktop\\New folder\\aboutus.jpg" },
+                data:frmdata,
+                contentType: false, // Not to set any content header  
+                processData: false, //
+                success: function (data) {
+                    $("#txtqr").val(null);
+                    savedata(data);                    
+                }
+            });
+        });
+    });
+</script>
+<div id="pageloaddiv"></div>
+<form method="post" enctype="multipart/form-data" style="">
+    <div class="container" style="padding:50px;">
+        <div class="row" style="margin-top:20px;">
+            <div class="col-lg-3">
+                Date
+            </div>
+            <div class="col-lg-3">
+                <input type="text" id="txtbid" style="display:none;"/>
+                <input type="text" id="dten" name="qrdate" style="font-size: 17px;"/>
+            </div>
+            <div class="col-lg-3">
+                Title
+            </div>
+            <div class="col-lg-3">
+                <input type="text" id="txttitle" name="qrtitle" style="font-size: 17px;" />
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px;padding-top:50px;">
+            <div class="col-lg-3">
+                URL
+            </div>
+            <div class="col-lg-3">
+                <input type="file" id="txtqr" name="qrurll" /><br />
+                <label id="txtf"></label>
+            </div>
+            <div class="col-lg-3">
+                QR
+            </div>
+            <div class="col-lg-3" style="text-align:center;">
+                <img id="qrimg" src="" style="width:200px;height:188px;" />
+            </div>
+        </div>
+        <div class="row" style="margin-top:30px;">
+            <div class="col-lg-7">
+
+            </div>
+            <div class="col-lg-5" style="padding-right: 11px;">
+                <div class="row" style="text-align:center;">
+                    <div class="col-lg-3">
+                        <input type="button" id="btnsave" class="button" value="Save" />
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="button" id="btnupdate" class="button" value="Update" />
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="button" id="btndelete" class="button" value="Delete" />
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="button" id="btncancel" class="button" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="tblrec">
+                    <thead>
+                        <tr style="background-color: #253b51; color: white;">
+                            <th style="display:none;">
+                                id
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                URL
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="rdt"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</form>

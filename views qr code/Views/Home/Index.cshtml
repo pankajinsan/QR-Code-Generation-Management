@@ -1,0 +1,89 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_homeLayoutPage.cshtml";
+    ViewBag.Title = "Index";
+}
+<script>
+    $(document).ready(function () {
+        $("#butlog").click(function () {
+            $("#pageloaddiv").show();
+            var log = $("#txtlog").val();
+            var pass = $("#txtpass").val();
+            $.ajax({
+                type: "Post",
+                url:"./Home/log",
+                data:{"txtlog":""+log+"","pass":""+pass+""},
+                success: function(data) {
+                   // $("#pageloaddiv").hide();
+                    //alert(data)
+                    if (data=="Correct")
+                    {
+                        
+                        window.location.href ="http://"+window.location.host + "/home/upvideo";
+                    }
+                }
+            })
+        });
+        $("#butcan").click(function () {
+            $("#txtlog").val("");
+            $("#txtpass").val("");
+        });
+    });
+
+</script>
+<div id="pageloaddiv">
+
+</div>
+<!--<h2>Index Video QR Mata Durga</h2>-->
+<div class="container-fluid" style="background-color: #00000057; background-size: cover; width: 100%; min-height: 750px;">
+   
+    <div class="container" style="margin-left:auto;margin-right:auto;width:450px;padding-top:210px;">
+        
+        <div class="" style="background-color: #253b5166; width: 420px; height: 49px; padding: 21px; padding-top: 21px; padding-top: 5px; color: goldenrod; font-size: x-large;">
+            <label>Login</label>
+        </div>
+        <div class="" style="background-color: #cdd2c936; padding: 42px;padding-top:20px ;padding-bottom: 22px; border: 1px solid #ffffff1f; color: white;">
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Login id</label>
+                </div>
+                <div class="col-lg-8">
+                    <input type="text" id="txtlog" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 " style="margin-top:10px;">
+                    <label>Password</label>
+                </div>
+                <div class="col-lg-8" style="padding-top: 12px;">
+                    <input type="password" id="txtpass" />
+                </div>
+            </div>
+            <div class="row" style="padding-top:10px;">
+                <div class="col-lg-4">
+
+                </div>
+                <div class="col-lg-4" style="padding-left:11px;">
+                    <input type="button" class="button"  id="butlog" value="Login" /> 
+                  
+                </div>
+                <div class="col-lg-4" style="padding-left:5px;">
+                    <input type="button" class="button" id="butcan" value="Cancel" />                     
+                </div>
+            </div>
+        </div>
+    </div>
+    <label id="msg">@ViewBag.msg</label>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var msg = $("#msg").val();
+        if (msg != "")
+        {
+            $("#pageloaddiv").hide();
+            alert(msg);
+        }
+    });
+</script>

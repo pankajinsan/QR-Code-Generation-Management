@@ -1,0 +1,289 @@
+﻿@{
+    ViewBag.Title="Vector";
+}
+<!DOCTYPE html>
+
+<html>
+<head style="background-color:red;">
+    <meta name="viewport" content="width=device-width" />
+
+    <title>@ViewBag.Title</title>
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/vector.css" rel="stylesheet" />
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    <link href="~/owl-carousel/owl.carousel.css" rel="stylesheet" />
+    <link href="~/owl-carousel/owl.theme.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <script src="~/owl-carousel/owl.carousel.js"></script>
+    <script src="~/Scripts/wow.min.js"></script>
+    <style>
+        #owl-demo .item img {
+            display: block;
+            width: 100%;
+            /*  max-height: 500px;*/
+        }
+
+        .owl-pagination {
+            background-color: #343B3F;
+            margin-top: -10px;
+        }
+        #owl-demo1 .item img {
+            display: block;
+            /*  width: 100%;
+             max-height: 500px;*/
+        }
+
+        .owl-pagination {
+            background-color: #343B3F;
+            margin-top: -10px;
+        }
+        #owl-demo1 .item {
+            /*margin-left: 90px;
+            margin-right: 90px;
+            margin-bottom: 50px;*/
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+            #owl-demo1 .item img {
+                display: block;
+               
+                height: auto;
+            }
+        .testimonial {
+            background: url(../images/testimonial.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+            .testimonial .section_overlay {
+                background: rgba(0, 0, 0, .6);
+                padding-top: 80px;
+                padding-bottom: 80px;
+            }
+
+        .carousel-indicators {
+            bottom: -8px;
+        }
+
+        div.carousel-inner .item img {
+            border: 2px solid #f39c12;
+            border-radius: 50%;
+            padding: 3px;
+        }
+
+        .testimonial_caption {
+            padding-bottom: 70px;
+        }
+
+            .testimonial_caption p {
+                color: #D8D8D8;
+                font-size: 18px;
+                line-height: 27px;
+                padding-top: 50px;
+            }
+
+            .testimonial_caption h2 {
+                color: #F86924;
+                text-transform: uppercase;
+                font-weight: 900;
+                font-size: 30px;
+                margin-top: 25px;
+            }
+
+            .testimonial_caption h4 {
+                color: #F86924;
+            }
+
+                .testimonial_caption h4 span {
+                    color: #D8D8D8;
+                    font-style: italic;
+                    font-weight: 300;
+                }
+
+        .testimonial ol.carousel-indicators li {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #f39c12;
+            margin: 1PX;
+        }
+
+            .testimonial ol.carousel-indicators li.active {
+                width: 12px;
+                height: 12px;
+                border: 0px solid #f39c12;
+                background: #f39c12;
+            }
+        .headcon a {
+            color:white;
+            font-size:large;
+          
+            cursor:pointer;
+        }
+
+    </style>
+</head>
+<body >
+    <header>
+        <div class="body_wrap">
+            <div class="sitehead container-fluid">
+                <!-- Mata durga -->
+                <div class="row">
+                    <div class="col-lg-1" style="text-align: left; padding: 12px;">
+                        </div>
+                        <div class="col-lg-1" style="text-align: left; padding: 16px;">
+                            <img class="img-responsive" style="margin-left:42px;" src="/images/v.png" />
+                        </div>
+                        <div class="col-lg-3">
+                            <label style="font-size: 2.5vmax; font-family: Arial; font-weight: bold; color: white; padding: 12px; padding-left: 0px;">Vector</label>
+                        </div>
+                         <div class="col-lg-2">
+
+                         </div>
+                    <div class="col-lg-5">
+                        <div class="row headcon" style="text-align: center; line-height: 56px; width: 100%; padding: 12px;">
+                            <div class="col-lg-3">
+                                <a>Home</a>
+                            </div>
+                            <div class="col-lg-3">
+                                <a>Hvad vi gør</a>
+                            </div>
+                            <div class="col-lg-3">
+                                <a>Om Os</a>
+                            </div>
+                            <div class="col-lg-3">
+                                <a>Begejstring</a>
+                             </div>
+                            </div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+</header>
+
+    <div class="pages" id="home">
+        <div id="carousel">
+            <div id="owl-demo" class="owl-carousel owl-theme">
+                <div class="item">
+
+                    <img src="images/slides/slide1.jpg" alt="The Last of us">
+                    
+
+                </div>
+                <div class="item">
+                    <img src="images/slides/slide2.jpg" alt="GTA V">
+                   
+                </div>
+                <div class="item">
+                    <img src="images/slides/slide3.jpg" alt="Mirror Edge">
+                    
+                </div>
+                <div class="item">
+                    <img src="images/slides/slide4.jpg" alt="Mirror Edge">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+    <footer>
+        <div class="sitefoot container-fluid">
+            <div class="container clearfix">
+
+                <div class="row">
+
+                    <div class="col-lg-4" style="text-align:left;">
+                        <label style="color:white;font-size:large;">Vector Group </label>
+                    </div>
+                    <div class="col-lg-4" style="text-align:center;">
+                        <label style="color:white;font-size:small;">Copyright © Msoft 2016 - 2017 All Rights Reserved.</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="col-lg-offset-3" style="padding:34px;color:orange;text-align:center;">
+
+                            <!--   <ul class="social-buttons" id="demo2">
+               <li>
+                   <a href="#" class="fa fa-twitter"></a>
+               </li>
+               <li>
+                   <a href="#" class="fa fa-facebook-square"></a>
+               </li>
+               <li>
+                   <a href="#" class="fa fa-instagram"></a>
+               <li>
+                   <a href="#" class="fa fa-vimeo"></a>
+               </li>
+               <li>
+                   <a href="#" class="fa fa-linkedin-square"></a>
+               </li>
+           </ul>-->
+                            <a href="http://twitter.com/" class="icon-button twitter"><i class="fa fa-twitter" style=""></i><span></span></a>
+                            <a href="http://facebook.com" class="icon-button facebook"><i class="fa fa-facebook-square" ></i><span></span></a>
+                            <a href="http://plus.google.com" class="icon-button google-plus"><i class="fa fa-google-plus" style=" "></i><span></span></a>
+                            <a href="http://plus.google.com" class="icon-button google-plus"><i class="fa fa-instagram" style=""></i><span></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+<script type="text/javascript">
+    $("#owl-demo").owlCarousel({
+
+        navigation: false,
+        slideSpeed: 300,
+        paginationSpeed: 400,
+        autoPlay: 6000,
+        addClassActive: true,
+        // transitionStyle: "fade",
+        singleItem: true
+
+        // "singleItem:true" is a shortcut for:
+        // items : 1,
+        // itemsDesktop : false,
+        // itemsDesktopSmall : false,
+        // itemsTablet: false,
+        // itemsMobile : false
+
+    });
+    $(".next-arrow").click(function () {
+        theme_slider.trigger('owl.next');
+    })
+    $(".prev-arrow").click(function () {
+        theme_slider.trigger('owl.prev');
+    })
+
+
+    $("#owl-demo1").owlCarousel({
+
+        navigation: false,
+        slideSpeed: 300,
+        paginationSpeed: 400,
+        autoPlay: 6000,
+        addClassActive: true,
+        // transitionStyle: "fade",
+        singleItem: true
+
+        // "singleItem:true" is a shortcut for:
+        // items : 1,
+        // itemsDesktop : false,
+        // itemsDesktopSmall : false,
+        // itemsTablet: false,
+        // itemsMobile : false
+
+    });
+    $(".next-arrow").click(function () {
+        theme_slider.trigger('owl.next');
+    })
+    $(".prev-arrow").click(function () {
+        theme_slider.trigger('owl.prev');
+    })
+   
+</script>
